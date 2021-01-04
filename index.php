@@ -30,11 +30,13 @@ if (isset($url[5])) {
     }
     if ($url[5] == 'pickCucumbers') {
         if (isset($_POST['id']) && isset($_POST['count'])) {
+            if (isset($url[4])) {
+                $link .= '/' . $url[4];
+            }
             if ($garden->pick($_POST['id'], $_POST['count']) == 'OK') {
-                if (isset($url[4])) {
-                    $link .= '/' . $url[4];
-                }
                 header("Location: $link");
+            }else{
+                header("Refresh:0; url=$link");
             }
         }
     }

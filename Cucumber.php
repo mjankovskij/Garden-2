@@ -105,28 +105,27 @@ class Cucumber
     {
         if(!$id || !$value){
             ?><script>alert('Nuskinti nepavyko, prasome pasitikslinti skinama kieki.')</script><?php
-            return;
+            return 'Error';
         }
         
         $amount = preg_replace('/[^0-9]/', '', $value);
         
         if($amount!=$value || $amount<0){
-            
             ?><script>alert('Prasome pasitikslinti skinama kieki.')</script><?php
-            return;
+            return 'Error';
         }
         
         $sql = $this->connection->query("SELECT count FROM garden WHERE id = '$id'");
         if(!($sql->num_rows)){
             ?><script>alert('Tokiu agurku nera.')</script><?php
-            return;
+            return 'Error';
         }
         
         while ($row = $sql->fetch_assoc()) $u_amount = $row["count"];
         
         if($u_amount-$amount<0){
             ?><script>alert('Kiekis negali buti neigiamas.')</script><?php
-            return;
+            return 'Error';
         }
         $this->connection->query("UPDATE garden SET count = count - $amount WHERE id = '$id'");
         return 'OK';
